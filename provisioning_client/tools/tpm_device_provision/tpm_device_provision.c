@@ -18,7 +18,6 @@
 typedef struct REGISTRATION_INFO_TAG
 {
     BUFFER_HANDLE endorsement_key;
-    char* registration_id;
 } REGISTRATION_INFO;
 
 static int gather_registration_info(REGISTRATION_INFO* reg_info)
@@ -36,12 +35,6 @@ static int gather_registration_info(REGISTRATION_INFO* reg_info)
         if ((reg_info->endorsement_key = prov_auth_get_endorsement_key(security_handle)) == NULL)
         {
             (void)printf("failed getting endorsement key from device\r\n");
-            result = __LINE__;
-        }
-        else if ((reg_info->registration_id = prov_auth_get_registration_id(security_handle)) == NULL)
-        {
-            (void)printf("failed getting endorsement key from device\r\n");
-            BUFFER_delete(reg_info->endorsement_key);
             result = __LINE__;
         }
         else
@@ -86,19 +79,15 @@ int main()
             }
             else
             {
-                (void)printf("\r\nRegistration Id:\r\n%s\r\n", reg_info.registration_id);
-                (void)printf("\r\nEndorsement Key:\r\n%s\r\n", STRING_c_str(encoded_ek));
+                (void)printf(STRING_c_str(encoded_ek));
                 STRING_delete(encoded_ek);
                 result = 0;
             }
             BUFFER_delete(reg_info.endorsement_key);
-            free(reg_info.registration_id);
         }
         prov_dev_security_deinit();
         platform_deinit();
     }
 
-    (void)printf("\r\nPress any key to continue:\r\n");
-    (void)getchar();
     return result;
 }
