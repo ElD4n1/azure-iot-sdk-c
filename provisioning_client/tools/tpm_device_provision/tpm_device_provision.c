@@ -79,7 +79,7 @@ int main()
             }
             else
             {
-                (void)printf(STRING_c_str(encoded_ek));
+                (void)printf("%s", STRING_c_str(encoded_ek));
                 STRING_delete(encoded_ek);
                 result = 0;
             }
